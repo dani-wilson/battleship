@@ -8,6 +8,10 @@ attr_reader :name,
         @length = length
     end
 
+    def health
+        @length
+    end
+
 
 
 end

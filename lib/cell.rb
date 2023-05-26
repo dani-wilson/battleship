@@ -40,8 +40,10 @@ class Cell
         @render
       end
     else 
-        if !@ship
+      if !@ship
         @render = "M"
+      elsif @ship.sunk? == true
+        @render = "X"
       else
         @render = "H"
       end

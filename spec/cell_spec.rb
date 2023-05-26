@@ -38,9 +38,17 @@ RSpec.describe Cell do
 
   it "can render a String representation of itself" do
     expect(@cell_1.render).to eq(".")
-    
+
     @cell_1.fire_upon
 
     expect(@cell_1.render).to eq("M")
+  end
+
+  it 'can indicate a ship as present even if not fired upon' do
+    @cell_2.place_ship(@cruiser)
+    
+    expect(@cell_2.render).to eq(".")
+
+    expect(@cell_2.render(true)).to eq("S")
   end
 end

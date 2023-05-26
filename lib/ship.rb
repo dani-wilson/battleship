@@ -14,7 +14,15 @@ attr_reader :name,
     end
 
     def sunk?
-        @sunk
+        if @length == 0
+        @sunk = true
+        else
+        @sunk = false
+        end
+    end
+
+    def hit
+        @length -= 1
     end
 
 

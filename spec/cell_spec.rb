@@ -9,6 +9,6 @@ RSpec.describe Cell do
   end
 
   it 'exists and has a coordinate' do
-    expect(cell.coordinate).to eq(B4)
+    expect(@cell.coordinate).to eq("B4")
   end
 end

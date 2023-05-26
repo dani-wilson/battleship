@@ -6,7 +6,6 @@ attr_reader :name,
     def initialize(name, length)
         @name = name
         @length = length
-        @sunk = false
     end
 
     def health

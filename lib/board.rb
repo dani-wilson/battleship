@@ -27,6 +27,7 @@ class Board
   end
 
   def valid_placement?(ship, coordinates)
-    ship.length == coordinates.count
+    consecutive_check = coordinates.each_cons(coordinates.count) 
+    consecutive_check == ship.length
   end
 end

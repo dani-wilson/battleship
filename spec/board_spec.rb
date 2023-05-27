@@ -12,6 +12,7 @@ RSpec.describe do
   it 'has 16 cells' do
     expect(@board.cells.count).to eq(16)
     expect(@board.cells).to be_a(Hash)
+    expect(@board.cells["A1"]).to be_a(Cell)
   end
 
 

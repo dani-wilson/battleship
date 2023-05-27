@@ -68,6 +68,5 @@ RSpec.describe Cell do
 
     expect(@cruiser.sunk?).to eq(true)
     expect(@cell_2.render).to eq("X")
-
   end
 end

@@ -73,19 +73,3 @@ class Board
   end
 end
 
- 
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-# IDEAS
-
-# consecutive_check = coordinates.each_cons(coordinates.count) 
-# consecutive_check == ship.length
-
-# test = coordinates.each_cons(coordinates.to_i) {|coordinate| coordinate[0]}
-
-# def consecutive_numbers(letters, numbers)
-#    numbers.each_cons(2).all? {|a,b| b == a + 1} && letters.each_cons(2).all? {|a,b| b == a}
-#    numbers.each_cons(2).all? {|a,b| b == a + 1}
-#     binding.pry
-#   end
-

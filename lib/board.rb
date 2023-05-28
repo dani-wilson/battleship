@@ -27,6 +27,35 @@ class Board
   end
 
   def valid_placement?(ship, coordinates)
-    ship.length == coordinates.count
+    coordinates.count == ship.length
   end
+
+  def consecutive_check?(ship, coordinates)
+    letters = coordinates.map do |coordinate|
+      coordinate[0].ord
+    end
+    numbers = coordinates.map do |coordinate|
+      coordinate[1].to_i
+    end
+    x = letters.each_cons(letters) {|letter| p letter}
+
+    y = numbers.each_cons(numbers) {|number| p number}
+    
+
+  end
+
 end
+
+
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# IDEAS
+
+    # consecutive_check = coordinates.each_cons(coordinates.count) 
+    # consecutive_check == ship.length
+
+# test = coordinates.each_cons(coordinates.to_i) {|coordinate| coordinate[0]}
+
+
+  

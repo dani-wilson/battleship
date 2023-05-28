@@ -26,36 +26,66 @@ class Board
     @cells.has_key?(coordinate)
   end
 
-  def valid_placement?(ship, coordinates)
+  def length_check(ship, coordinates)
     coordinates.count == ship.length
   end
 
-  def consecutive_check?(ship, coordinates)
-    letters = coordinates.map do |coordinate|
-      coordinate[0].ord
-    end
-    numbers = coordinates.map do |coordinate|
-      coordinate[1].to_i
-    end
-    x = letters.each_cons(letters) {|letter| p letter}
-
-    y = numbers.each_cons(numbers) {|number| p number}
-    
-
+  def consecutive_numbers(letters, numbers)
+    numbers.each_cons(2).all? {|a,b| b == a + 1} && letters.each_cons(2).all? {|a,b| b == a}
   end
 
+  def consecutive_letters(letters, numbers)
+    letters.each_cons(2).all? {|a,b| b == a + 1} && numbers.each_cons(2).all? {|a,b| b == a}
+  end
+
+  def placement_fails(ship, coordinates)
+    coordinates.each do |coordinate|
+      if !valid_coordinate?(coordinate) || !@cells[coordinate].empty? || !length_check(ship, coordinates)
+        return true
+      end
+    end
+    return false
+  end
+
+  def valid_placement?(ship, coordinates)
+    if placement_fails(ship, coordinates) == true
+      return false
+    end
+    letters = split_coordinates(coordinates)[0]
+    numbers = split_coordinates(coordinates)[1]
+    if consecutive_letters(letters, numbers)
+      return true
+    elsif consecutive_numbers(letters, numbers)
+      return true
+    else 
+      return false
+    end
+  end
+
+  def split_coordinates(coordinates)
+    letters = []
+    numbers = []
+    coordinates.each do |coordinate|
+      letters << coordinate.split("",2)[0].ord
+      numbers << coordinate.split("",2)[1].to_i
+    end
+    return [letters, numbers]
+  end
 end
 
-
-
+ 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # IDEAS
 
-    # consecutive_check = coordinates.each_cons(coordinates.count) 
-    # consecutive_check == ship.length
+# consecutive_check = coordinates.each_cons(coordinates.count) 
+# consecutive_check == ship.length
 
 # test = coordinates.each_cons(coordinates.to_i) {|coordinate| coordinate[0]}
 
+# def consecutive_numbers(letters, numbers)
+#    numbers.each_cons(2).all? {|a,b| b == a + 1} && letters.each_cons(2).all? {|a,b| b == a}
+#    numbers.each_cons(2).all? {|a,b| b == a + 1}
+#     binding.pry
+#   end
 
-  

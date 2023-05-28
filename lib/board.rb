@@ -71,5 +71,18 @@ class Board
     end
     return [letters, numbers]
   end
+
+  def place(ship, coordinates)
+    if valid_placement?(ship, coordinates)
+      cell_coordinates = []
+    @cells.each do |cell|
+      if coordinates.include?(cell[1].coordinate)
+        cell[1].place_ship(ship)
+        cell_coordinates << cell[1].coordinate
+        end
+      end
+    end
+  return cell_coordinates
+  end
 end
 

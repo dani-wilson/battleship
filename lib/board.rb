@@ -1,4 +1,5 @@
 class Board
+include Renderable
   attr_reader :cells
 
   def initialize
@@ -74,15 +75,21 @@ class Board
 
   def place(ship, coordinates)
     if valid_placement?(ship, coordinates)
-      cell_coordinates = []
-    @cells.each do |cell|
-      if coordinates.include?(cell[1].coordinate)
-        cell[1].place_ship(ship)
-        cell_coordinates << cell[1].coordinate
-        end
+      coordinates.each do |coordinate|
+        @cells[coordinate].place_ship(ship)
       end
     end
-  return cell_coordinates
+  end
+
+  def render_board(peek = false)
+    array1 = [1, 2, 3, 4]
+    array2 = ["A", @cells["A1"].render, @cells["A2"].render, @cells["A3"].render, @cells["A4"].render]
+    array3 = ["B", @cells["B1"].render, @cells["B2"].render, @cells["B3"].render, @cells["B4"].render]
+    array4 = ["C", @cells["C1"].render, @cells["C2"].render, @cells["C3"].render, @cells["C4"].render]
+    array5 = ["D", @cells["D1"].render, @cells["D2"].render, @cells["D3"].render, @cells["D4"].render]
+  
+    puts ("\n") + (" ") + (" ") + array1.join(" ") + ("\n") + array2.join(" ") + ("\n") + array3.join(" ") + ("\n") + array4.join(" ") + ("\n") + array5.join(" ")
   end
 end
+
 

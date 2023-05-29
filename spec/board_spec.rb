@@ -49,6 +49,48 @@ RSpec.describe do
     expect(@board.valid_placement?(@cruiser, ["B1", "C1", "D1"])).to eq(true)
   end
 
+  it 'can have a ship placed in its cells' do
+    expect(@board.place(@cruiser, ["A1", "A2", "A3"])).to eq(["A1", "A2", "A3"])
+    expect(@board.cells["A1"].ship).to be_a(Ship)
+    expect(@board.cells["A2"].ship).to be_a(Ship)
+    expect(@board.cells["A3"].ship).to be_a(Ship)
+    expect(@board.cells["A4"].empty?).to eq(true)
+    expect(@board.cells["A2"].ship == @board.cells["A3"].ship).to eq(true)
+  end
+
+  it 'cannot allow for overlapping ships' do
+    @board.place(@cruiser, ["A1", "A2", "A3"])
+
+    expect(@board.valid_placement?(@submarine, ["A1", "B1"])).to eq(false)
+  end
+
+  it 'can render itself in string format' do
+    @board.place(@cruiser, ["A3", "B3", "C3"])
+    @board.render_board(true)
+  end
+
+  it 'will show ships' do
+    @board.place(@cruiser, ["A3", "B3", "C3"])
+    @board.render_board(true)
+    expect(@board.cells["A3"].ship).to be_a(Ship)
+  end
+
+  it 'can render hits and misses' do
+    @board.place(@cruiser, ["A3", "B3", "C3"])
+    @board.render_board(true)
+    expect(@board.cells["A3"].ship).to be_a(Ship)
+
+    @board.cells["A1"].fire_upon
+
+    expect(@board.cells["A1"].render).to eq("M")
+    puts @board.render_board
+    
+    @board.cells["B3"].fire_upon
+
+    expect(@board.cells["B3"].render).to eq("H")
+    puts @board.render_board
+  end
+
 
 
 

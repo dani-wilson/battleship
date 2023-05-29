@@ -71,21 +71,31 @@ class Board
     end
     return [letters, numbers]
   end
+
+  def place(ship, coordinates)
+    if valid_placement?(ship, coordinates)
+      coordinates.each do |coordinate|
+        @cells[coordinate].place_ship(ship)
+      end
+    end
+  end
+
+  def render_board(peek = false)
+    array1 = [1, 2, 3, 4]
+    if peek == true
+      array2 = ["A", @cells["A1"].render(true), @cells["A2"].render(true), @cells["A3"].render(true), @cells["A4"].render(true)]
+      array3 = ["B", @cells["B1"].render(true), @cells["B2"].render(true), @cells["B3"].render(true), @cells["B4"].render(true)]
+      array4 = ["C", @cells["C1"].render(true), @cells["C2"].render(true), @cells["C3"].render(true), @cells["C4"].render(true)]
+      array5 = ["D", @cells["D1"].render(true), @cells["D2"].render(true), @cells["D3"].render(true), @cells["D4"].render(true)]
+    else
+      array2 = ["A", @cells["A1"].render, @cells["A2"].render, @cells["A3"].render, @cells["A4"].render]
+      array3 = ["B", @cells["B1"].render, @cells["B2"].render, @cells["B3"].render, @cells["B4"].render]
+      array4 = ["C", @cells["C1"].render, @cells["C2"].render, @cells["C3"].render, @cells["C4"].render]
+      array5 = ["D", @cells["D1"].render, @cells["D2"].render, @cells["D3"].render, @cells["D4"].render]
+    end
+  
+    puts ("\n") + (" ") + (" ") + array1.join(" ") + ("\n") + array2.join(" ") + ("\n") + array3.join(" ") + ("\n") + array4.join(" ") + ("\n") + array5.join(" ")
+  end
 end
 
- 
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-# IDEAS
-
-# consecutive_check = coordinates.each_cons(coordinates.count) 
-# consecutive_check == ship.length
-
-# test = coordinates.each_cons(coordinates.to_i) {|coordinate| coordinate[0]}
-
-# def consecutive_numbers(letters, numbers)
-#    numbers.each_cons(2).all? {|a,b| b == a + 1} && letters.each_cons(2).all? {|a,b| b == a}
-#    numbers.each_cons(2).all? {|a,b| b == a + 1}
-#     binding.pry
-#   end
 

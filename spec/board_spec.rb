@@ -58,7 +58,15 @@ RSpec.describe do
     expect(@board.cells["A2"].ship == @board.cells["A3"].ship).to eq(true)
   end
 
+  it 'cannot allow for overlapping ships' do
+    @board.place(@cruiser, ["A1", "A2", "A3"])
 
+    expect(@board.valid_placement?(@submarine, ["A1", "B1"])).to eq(false)
+  end
 
+  it 'can render itself in string format' do
+    @board.render_board
+  end
 
+  
 end

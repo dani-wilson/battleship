@@ -38,16 +38,7 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
       sleep(2.0)
       self.play_or_quit
     elsif input == "p"
-      computer_place_ships
-      puts "I have laid out my ships on the grid."
-      sleep(1.5)
-      puts "You now need to lay out your two ships."
-      sleep(1.5)
-      puts "The Cruiser is three units long and the Submarine is two units long."
-      sleep(1.5)
-      board = Board.new
-      puts board.render_board
-      user_place_ships
+      self.board_setup
     else
       puts "Invalid input, please enter p or q."
       until input == "p" || input == "q"
@@ -56,6 +47,17 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
     end
   end
 
+  def board_setup
+    self.computer_place_ships
+    puts "I have laid out my ships on the grid."
+    sleep(1.5)
+    puts "You now need to lay out your two ships."
+    sleep(1.5)
+    puts "The Cruiser is three units long and the Submarine is two units long."
+    sleep(1.5)
+    puts @player_board.render_board
+    self.user_place_ships
+  end
 
   def computer_place_ships
     cruiser_coordinates = []

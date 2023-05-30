@@ -59,22 +59,18 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
 
   def computer_place_ships
     cruiser_coordinates = []
-    loop do
-      random_coordinate = @computer_board.cells.keys.sample
+    until cruiser_coordinates.count == 3 && @computer_board.valid_placement?(@computer_cruiser, cruiser_coordinates) do
+      sample = @computer_board.cells.keys.sample
       cruiser_coordinates << sample
-      until cruiser_coordinates.count == 3 && valid_placement?(@computer_cruiser, cruiser_coordinates)
     end
     @computer_board.place(@computer_cruiser, cruiser_coordinates)
 
     sub_coordinates = []
-    loop do
-      random_coordinate = @computer_board.cells.keys.sample
+    until sub_coordinates.count == 2 && @computer_board.valid_placement?(@computer_sub, sub_coordinates) do
+      sample = @computer_board.cells.keys.sample
       sub_coordinates << sample
-      until sub_coordinates.count == 2 && valid_placement?(@computer_sub, sub_coordinates)
     end
     @computer_board.place(@computer_sub, sub_coordinates)
-
-
   end
 
   def user_place_ships
@@ -82,12 +78,17 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
     user_spaces = gets.chomp
     spaces = []
     spaces << user_spaces
-    if spaces.board.valid_placement
-      puts board.render_board(peek = true) + "(\n)" + "Enter the squares for the Submarine (2 spaces)."
+    if @player_board.valid_placement?(@player_cruiser, spaces)
+      @player_board.place(@player_cruiser, spaces)
+      puts @player_board.render_board(peek = true) + "(\n)" + "Enter the squares for the Submarine (2 spaces)."
+    end
+    user_spaces = gets.chomp
+    spaces = []
+    spaces << user_spaces
+    if @player_board.valid_placement?(@player_sub, spaces)
+      @player_board.place(@player_sub, spaces)
+      puts @player_board.render_board(peek = true) + "(\n)" + "You have placed both your ships!"
     end
   end
 
-  def computer_coord_picker
-    
-  end
 end

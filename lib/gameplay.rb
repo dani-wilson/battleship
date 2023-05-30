@@ -9,7 +9,7 @@ class Gameplay
     @computer_sub = Ship.new("Submarine", 2)
   end
 
-  def start_or_quit
+  def welcome_screen
     puts "     |__
     |\/
     ---
@@ -27,16 +27,16 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
     puts "Welcome to BATTLESHIP"
     sleep(1.0)
     puts "Enter p to play. Enter q to quit."
-    game_options
+    play_or_quit
   end
 
-  def game_options
+  def play_or_quit
     input = gets.chomp
     if input == "q"
       sleep(0.5)
       puts "Goodbye"
       sleep(2.0)
-      self.start_or_quit
+      self.play_or_quit
     elsif input == "p"
       computer_place_ships
       puts "I have laid out my ships on the grid."
@@ -51,7 +51,7 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
     else
       puts "Invalid input, please enter p or q."
       until input == "p" || input == "q"
-        self.game_options
+        self.play_or_quit
       end
     end
   end

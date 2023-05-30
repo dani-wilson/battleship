@@ -1,6 +1,12 @@
 class Gameplay
 
   def initialize
+    @player_board = Board.new
+    @computer_board = Board.new
+    @player_cruiser = Ship.new("Cruiser", 3)
+    @player_sub = Ship.new("Submarine", 2)
+    @computer_cruiser = Ship.new("Cruiser", 3)
+    @computer_sub = Ship.new("Submarine", 2)
   end
 
   def start_or_quit
@@ -52,6 +58,22 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
 
 
   def computer_place_ships
+    cruiser_coordinates = []
+    loop do
+      random_coordinate = @computer_board.cells.keys.sample
+      cruiser_coordinates << sample
+      until cruiser_coordinates.count == 3 && valid_placement?(@computer_cruiser, cruiser_coordinates)
+    end
+    @computer_board.place(@computer_cruiser, cruiser_coordinates)
+
+    sub_coordinates = []
+    loop do
+      random_coordinate = @computer_board.cells.keys.sample
+      sub_coordinates << sample
+      until sub_coordinates.count == 2 && valid_placement?(@computer_sub, sub_coordinates)
+    end
+    @computer_board.place(@computer_sub, sub_coordinates)
+
 
   end
 
@@ -59,9 +81,13 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
     puts "Enter the squares for the Cruiser (3 spaces)."
     user_spaces = gets.chomp
     spaces = []
-    spaces >> user_spaces
+    spaces << user_spaces
     if spaces.board.valid_placement
       puts board.render_board(peek = true) + "(\n)" + "Enter the squares for the Submarine (2 spaces)."
     end
+  end
+
+  def computer_coord_picker
+    
   end
 end

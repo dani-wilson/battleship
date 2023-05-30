@@ -1,6 +1,14 @@
 class Gameplay
+  attr_reader :player_board,
+              :computer_board
 
   def initialize
+    @player_board = Board.new
+    @computer_board = Board.new
+    @computer_cruiser = Ship.new("Cruiser", 3)
+    @computer_sub = Ship.new("Submarine", 2)
+    @player_cruiser = Ship.new("Cruiser", 3)
+    @player_sub = Ship.new("Submarine", 2)
   end
 
   def start_or_quit
@@ -39,8 +47,8 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
       sleep(1.5)
       puts "The Cruiser is three units long and the Submarine is two units long."
       sleep(1.5)
-      board = Board.new
-      puts board.render_board
+      @player_board
+      puts @player_board.render_board
       user_place_ships
     else
       puts "Invalid input, please enter p or q."
@@ -50,18 +58,17 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
     end
   end
 
-
   def computer_place_ships
 
   end
 
   def user_place_ships
     puts "Enter the squares for the Cruiser (3 spaces)."
-    user_spaces = gets.chomp
-    spaces = []
-    spaces >> user_spaces
-    if spaces.board.valid_placement
-      puts board.render_board(peek = true) + "(\n)" + "Enter the squares for the Submarine (2 spaces)."
+    coordinates = []
+    coordinates << gets.chomp
+    if coordinates.valid_placement?(@player_cruiser, coordinates)
+      @player_board.place(@player_cruiser, coordinates)
+      puts @player_board.render_board(peek = true) + "(\n)" + "Enter the squares for the Submarine (2 spaces)."
     end
   end
 end

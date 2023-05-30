@@ -83,12 +83,12 @@ RSpec.describe do
     @board.cells["A1"].fire_upon
 
     expect(@board.cells["A1"].render).to eq("M")
-    puts @board.render_board
+    # puts @board.render_board
     
     @board.cells["B3"].fire_upon
 
     expect(@board.cells["B3"].render).to eq("H")
-    puts @board.render_board
+    # puts @board.render_board
   end
 
 

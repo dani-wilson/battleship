@@ -51,6 +51,7 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
 
   def board_setup
     computer_place_ships
+    # binding.pry
     puts "I have laid out my ships on the grid."
     sleep(1.5)
     puts "You now need to lay out your two ships."
@@ -61,20 +62,46 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
     user_place_cruiser
   end
 
+  def computer_get_cruiser_coordinates
+    cruiser_coordinates = []
+    # until @computer_board.valid_placement?(@computer_cruiser, cruiser_coordinates) do
+      random_coords = @computer_board.cells.keys.sample(3)
+      cruiser_coordinates << random_coords
+      until @computer_board.valid_placement?(@computer_cruiser, cruiser_coordinates)
+        computer_get_cruiser_coordinates
+    end
+    return computer_get_cruiser_coordinates
+  end
+
+  def computer_get_sub_coordinates
+    sub_coordinates = []
+    random_coords = @computer_board.cells.keys.sample(2)
+    sub_coordinates << random_coords
+    until @computer_board.valid_placement?(@computer_sub, sub_coordinates)
+      computer_get_sub_coordinates
+    end
+    return computer_get_sub_coordinates
+  end
+
+
+
   def computer_place_ships
     cruiser_coordinates = []
-    # require 'pry'; binding.pry
-    until @computer_board.valid_placement?(@computer_cruiser, cruiser_coordinates) do
-      random_coords = @computer_board.cells.keys.sample(3)
-      # require 'pry'; binding.pry
-      cruiser_coordinates << random_coords
+    @computer_cruiser.length.times do
+      until @computer_board.valid_placement?(@computer_cruiser, cruiser_coordinates) #do
+        cruiser_coordinates << @computer_board.cells.keys.sample(3)
+        binding.pry
+      end
     end
     @computer_board.place(@computer_cruiser, cruiser_coordinates)
+  
 
     sub_coordinates = []
-    until @computer_board.valid_placement?(@computer_sub, sub_coordinates) do
-      sample = @computer_board.cells.keys.sample(2)
-      sub_coordinates << sample
+    until @computer_board.valid_placement?(@computer_sub, sub_coordinates) #do
+      @computer_sub.length.times do
+      # sample = @computer_board.cells.keys.sample(2)
+      sub_coordinates << @computer_board.cells.keys.sample
+      end
     end
     @computer_board.place(@computer_sub, sub_coordinates)
   end
@@ -139,7 +166,7 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
 
   def display_boards
     puts "==*============*=COMPUTER BOARD====*======*======"
-    puts @computer_board.render_board(peek = false)
+    puts @computer_board.render_board(peek = true) #changing for now to be able to see
     puts "==========*=====*PLAYER BOARD====*============*=="
     puts @player_board.render_board(peek = true)
   end
@@ -150,6 +177,11 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
       if @computer_board.cells[shot].fired_upon? == false
         if @computer_board.valid_coordinate?(shot)
         @computer_board.cells[shot].fire_upon
+        sleep(1.5)
+        puts "'.  \ | /  ,'
+        `. `.' ,'
+        ( .`.|,' .)
+        - ~ -0- ~ -"
         sleep(1.5)
         explain_render(@computer_board, shot, "your")
         sleep(1.5)
@@ -168,8 +200,13 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
 
   def computer_turn
     puts "I will now attempt to fire on one of your ships."
+    sleep(1.5)
+    puts "'.  \ | /  ,'
+    `. `.' ,'
+    ( .`.|,' .)
+    - ~ -0- ~ -"
     shot = @player_board.cells.keys.sample
-    until @computer_board.cells[shot].fired_upon? == false do
+    until @computer_board.cells[shot].fired_upon? == false
       shot = @player_board.cells.keys.sample
     end
 

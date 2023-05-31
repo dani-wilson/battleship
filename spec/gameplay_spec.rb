@@ -24,11 +24,17 @@ RSpec.describe Gameplay do
   #   expect(@game.begin_game).to eq("p")
   # end
 
-  it 'test' do
-    @game.user_turn
-  end
+  # it 'test' do
+  #   @game.user_turn
+  # end
 
   it 'test' do
-    @game.computer_turn
+    @game.computer_get_coordinates
+    expect(@game.computer_get_coordinates).to be_an(Array)
   end
+
+  # it 'test' do
+  #   @game.computer_place_ships
+  #   binding.pry
+  # end
 end

@@ -192,11 +192,12 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
     elsif board.cells[shot].render == "H"
       puts "#{pov.capitalize} shot on #{shot} was a HIT!"
     else
-      puts "#{pov.capitalize}#{board.cells[shot].ship} has been sunk!"
+      puts "#{pov.capitalize} #{board.cells[shot].ship.name} has been sunk!"
     end
   end
 
 end
+
 
 # mission_to_sink method
 # if render = H

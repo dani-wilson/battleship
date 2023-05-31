@@ -28,13 +28,14 @@ RSpec.describe Gameplay do
   #   @game.user_turn
   # end
 
-  it 'test' do
-    @game.computer_get_coordinates
-    expect(@game.computer_get_coordinates).to be_an(Array)
-  end
-
   # it 'test' do
-  #   @game.computer_place_ships
-  #   binding.pry
+  #   @game.computer_get_coordinates
+  #   expect(@game.computer_get_coordinates).to be_an(Array)
   # end
+
+  it 'test' do
+    @game.computer_place_ships
+    expect(@game.computer_board.render_board(true).count("S")).to eq(5)
+    # binding.pry
+  end
 end

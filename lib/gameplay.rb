@@ -129,12 +129,12 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
       sleep(1.5)
       user_turn
     else
-      puts "Invalid placement.
-      Please enter 3 separate coordinates which are:
+      puts "Invalid placement."
+      "Please enter 3 separate coordinates which are:
       * placed starting with the upper-left most coordinate
       * consecutive
-      * horizontal (e.g. A1, A2) or vertical (e.g. A1, B1)
-      Please try again."
+      * horizontal (e.g. A1, A2) or vertical (e.g. A1, B1)"
+      "Please try again."
       user_place_sub
     end
   end
@@ -149,6 +149,7 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
   def user_turn
     puts "Please select a coordinate to fire upon. Choose wisely."
       shot = gets.chomp
+      if @computer_board.cells[shot].render == "."
         if @computer_board.valid_coordinate?(shot)
         @computer_board.cells[shot].fire_upon
         sleep(1.5)
@@ -158,6 +159,11 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
           puts "Invalid coordinates. Try again."
           user_turn
         end
+      else
+        puts "This coordinate has already been fired upon.
+        Please choose another."
+        user_turn
+      end
       display_boards
       computer_turn
   end
@@ -165,6 +171,10 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
   def computer_turn
     puts "I will now attempt to fire on one of your ships."
     shot = @player_board.cells.keys.sample
+    while @computer_board.cells[shot].render != "." do
+      shot = @player_board.cells.keys.sample
+    end
+
     if @player_board.valid_coordinate?(shot)
       @player_board.cells[shot].fire_upon
       sleep(1.5)
@@ -183,7 +193,6 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
     else
       puts "#{pov.capitalize}#{board.cells[shot].ship} has been sunk!"
     end
-    
   end
 
 end

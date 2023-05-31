@@ -38,7 +38,7 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
       sleep(0.5)
       puts "Goodbye"
       sleep(2.0)
-      self.play_or_quit
+      self.welcome_screen
     elsif input == "p"
       self.board_setup
     else
@@ -119,6 +119,13 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
       @player_board.place(@player_sub, spaces)
       puts @player_board.render_board(peek = true)
       puts "You have placed both your ships!"
+      sleep(1.5)
+      puts "Let's play!"
+      sleep(1.0)
+      display_boards
+      sleep(1.5)
+      puts "Please select a coordinate to fire upon. Choose wisely."
+      user_turn
     else
       puts "Invalid placement.
         Please enter 2 separate coordinates which are consecutive and either...
@@ -126,6 +133,17 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
         or Vertical (e.g. A1, B1)"
       user_place_sub
     end
+  end
+
+  def display_boards
+    puts "==*============*=COMPUTER BOARD====*======*======"
+    puts @computer_board.render_board(peek = false)
+    puts "==========*=====*PLAYER BOARD====*============*=="
+    puts @player_board.render_board(peek = true)
+  end
+
+  def user_turn
+    
   end
 
 end

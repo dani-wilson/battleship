@@ -149,7 +149,7 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
   def user_turn
     puts "Please select a coordinate to fire upon. Choose wisely."
       shot = gets.chomp
-      if @computer_board.cells[shot].render == "."
+      if @computer_board.cells[shot].fired_upon? == false
         if @computer_board.valid_coordinate?(shot)
         @computer_board.cells[shot].fire_upon
         sleep(1.5)
@@ -171,7 +171,7 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
   def computer_turn
     puts "I will now attempt to fire on one of your ships."
     shot = @player_board.cells.keys.sample
-    while @computer_board.cells[shot].render != "." do
+    until @computer_board.cells[shot].fired_upon? == false do
       shot = @player_board.cells.keys.sample
     end
 

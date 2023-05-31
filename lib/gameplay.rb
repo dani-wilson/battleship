@@ -124,7 +124,6 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
       sleep(1.0)
       display_boards
       sleep(1.5)
-      puts "Please select a coordinate to fire upon. Choose wisely."
       user_turn
     else
       puts "Invalid placement.
@@ -143,7 +142,15 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
   end
 
   def user_turn
-    
+    puts "Please select a coordinate to fire upon. Choose wisely."
+      shot = gets.chomp
+        if @computer_board.valid_coordinate?(shot)
+        @computer_board.cells[shot].fire_upon
+        sleep(1.5)
+        puts "Your shot on #{shot} was a #{@computer_board.cells[shot].render}"
+        sleep(1.5)
+        end
+      display_boards
   end
 
 end

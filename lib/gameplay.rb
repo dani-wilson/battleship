@@ -1,4 +1,6 @@
 class Gameplay
+  attr_reader :player_board,
+              :computer_board
 
   def initialize
     @player_board = Board.new
@@ -36,7 +38,7 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
       sleep(0.5)
       puts "Goodbye"
       sleep(2.0)
-      self.play_or_quit
+      self.welcome_screen
     elsif input == "p"
       self.board_setup
     else
@@ -117,6 +119,12 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
       @player_board.place(@player_sub, spaces)
       puts @player_board.render_board(peek = true)
       puts "You have placed both your ships!"
+      sleep(1.5)
+      puts "Let's play!"
+      sleep(1.0)
+      display_boards
+      sleep(1.5)
+      user_turn
     else
       puts "Invalid placement.
         Please enter 2 separate coordinates which are consecutive and either...
@@ -125,5 +133,40 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
       user_place_sub
     end
   end
+
+  def display_boards
+    puts "==*============*=COMPUTER BOARD====*======*======"
+    puts @computer_board.render_board(peek = false)
+    puts "==========*=====*PLAYER BOARD====*============*=="
+    puts @player_board.render_board(peek = true)
+  end
+
+  def user_turn
+    puts "Please select a coordinate to fire upon. Choose wisely."
+      shot = gets.chomp
+        if @computer_board.valid_coordinate?(shot)
+        @computer_board.cells[shot].fire_upon
+        sleep(1.5)
+        puts "Your shot on #{shot} was a #{@computer_board.cells[shot].render}"
+        sleep(1.5)
+        end
+      display_boards
+      computer_turn
+  end
+
+  def computer_turn
+    puts "I will now attempt to fire on one of your ships."
+    comp_shot = @player_board.cells.keys.sample(1).strip
+    if @player_board.valid_coordinate?(comp_shot)
+      @player_board.cells[comp_shot].fire_upon
+      sleep(1.5)
+      puts "My shot on #{comp_shot} was a #{@player_board.cells[comp_shot].render}"
+      sleep(1.5)
+    end
+    display_boards
+    user_turn
+  end
+
+
 
 end

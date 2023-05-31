@@ -1,6 +1,6 @@
 class Gameplay
-  # attr_reader :player_board,
-  #             :computer_board
+  attr_reader :player_board,
+              :computer_board
 
   def initialize
     @player_board = Board.new
@@ -50,7 +50,9 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
   end
 
   def board_setup
-    computer_place_ships
+    computer_place_ship(@computer_cruiser)
+    computer_place_ship(@computer_sub)
+    # binding.pry
     puts "I have laid out my ships on the grid."
     sleep(1.5)
     puts "You now need to lay out your two ships."
@@ -61,22 +63,20 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
     user_place_cruiser
   end
 
-  def computer_place_ships
-    cruiser_coordinates = []
-    # require 'pry'; binding.pry
-    until @computer_board.valid_placement?(@computer_cruiser, cruiser_coordinates) do
-      random_coords = @computer_board.cells.keys.sample(3)
-      # require 'pry'; binding.pry
-      cruiser_coordinates << random_coords
-    end
-    @computer_board.place(@computer_cruiser, cruiser_coordinates)
 
-    sub_coordinates = []
-    until @computer_board.valid_placement?(@computer_sub, sub_coordinates) do
-      sample = @computer_board.cells.keys.sample(2)
-      sub_coordinates << sample
+  def computer_place_ship(ship)
+    loop do
+      coordinates = []
+      
+      ship.length.times do
+        coordinates << @computer_board.cells.keys.sample
+      end
+      coordinates.sort
+      if @computer_board.valid_placement?(ship, coordinates) == true
+          @computer_board.place(ship, coordinates)
+        break
+      end
     end
-    @computer_board.place(@computer_sub, sub_coordinates)
   end
 
   def user_place_cruiser
@@ -151,6 +151,11 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
         if @computer_board.valid_coordinate?(shot)
         @computer_board.cells[shot].fire_upon
         sleep(1.5)
+        puts "'.  \ | /  ,'
+        `. `.' ,'
+        ( .`.|,' .)
+        - ~ -0- ~ -"
+        sleep(1.5)
         explain_render(@computer_board, shot, "your")
         sleep(1.5)
         else
@@ -163,13 +168,22 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
         user_turn
       end
       display_boards
+      if @computer_cruiser.sunk? == true && @computer_sub.sunk? == true
+        ending_message
+      else
       computer_turn
+      end
   end
 
   def computer_turn
     puts "I will now attempt to fire on one of your ships."
+    sleep(1.5)
+    puts "'.  \ | /  ,'
+    `. `.' ,'
+    ( .`.|,' .)
+    - ~ -0- ~ -"
     shot = @player_board.cells.keys.sample
-    until @computer_board.cells[shot].fired_upon? == false do
+    until @computer_board.cells[shot].fired_upon? == false
       shot = @player_board.cells.keys.sample
     end
 
@@ -180,7 +194,11 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
       sleep(1.5)
     end
     display_boards
+    if @player_cruiser.sunk? == true && player_sub.sunk? == true
+      ending_message
+    else
     user_turn
+    end
   end
 
   def explain_render(board, shot, pov)
@@ -192,6 +210,26 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
       puts "#{pov.capitalize} #{board.cells[shot].ship.name} has been sunk!"
     end
   end
+
+  def ending_message
+    if @computer_cruiser.sunk? == true && @computer_sub.sunk? == true
+    puts "                                   .''.       
+    .''.      .        *''*    :_\/_:     . 
+   :_\/_:   _\(/_  .:.*_\/_*   : /\ :  .'.:.'.
+.''.: /\ :   ./)\   ':'* /\ * :  '..'.  -=:o:=-
+:_\/_:'.:::.    ' *''*    * '.\'/.' _\(/_'.':'.'
+: /\ : :::::     *_\/_*     -= o =-  /)\    '  *
+'..'  ':::'     * /\ *     .'/.\'.   '
+   *            *..*         :
+     *
+     *"
+      puts "You won!!"
+    else
+      puts "You lose! Better luck next time."
+  end
+  sleep(4.0)
+  welcome_screen
+end
 
 end
 

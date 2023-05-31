@@ -39,33 +39,40 @@ class Board
   end
 
   def placement_fails(ship, coordinates)
-    coordinates.each do |coordinate|
-      if !valid_coordinate?(coordinate) || !@cells[coordinate].empty? || !length_check(ship, coordinates)
-        return true
+    if length_check(ship, coordinates) == false
+      return true
+    else
+      coordinates.each do |coordinate|
+        if !valid_coordinate?(coordinate) || !@cells[coordinate].empty?
+          return true
+        else
+          return false
+        end
       end
     end
-    return false
   end
 
   def valid_placement?(ship, coordinates)
-    if placement_fails(ship, coordinates) == true
-      return false
-    end
-    letters = split_coordinates(coordinates)[0]
-    numbers = split_coordinates(coordinates)[1]
-    if consecutive_letters(letters, numbers)
-      return true
-    elsif consecutive_numbers(letters, numbers)
-      return true
-    else 
-      return false
+    if coordinates == []
+      false
+    else
+      letters = split_coordinates(coordinates)[0]
+      numbers = split_coordinates(coordinates)[1]
+      if placement_fails(ship, coordinates) == true
+        return false
+      elsif consecutive_letters(letters, numbers) || consecutive_numbers(letters, numbers)
+        return true
+      else 
+        return false
+      end
     end
   end
 
   def split_coordinates(coordinates)
     letters = []
     numbers = []
-    coordinates.each do |coordinate|
+    # binding.pry
+    coordinates.flatten.each do |coordinate|
       letters << coordinate.split("",2)[0].ord
       numbers << coordinate.split("",2)[1].to_i
     end

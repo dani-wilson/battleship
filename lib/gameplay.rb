@@ -100,13 +100,11 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
       Do not overlap your ships!"
       user_place_sub
     else
-      puts "Invalid placement.
-      Please enter 3 separate coordinates which are:
+      puts "Invalid placement.""\n""\n"
+      puts "Please enter 3 separate coordinates which are:
       * placed starting with the upper-left most coordinate
       * consecutive
-      * horizontal (e.g. A1, A2, A3) or vertical (e.g. A1, B1, C1)
-
-      Please try again."
+      * horizontal (e.g. A1, A2, A3) or vertical (e.g. A1, B1, C1)""\n""\n"
       user_place_cruiser
     end
   end
@@ -130,12 +128,11 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
       sleep(1.5)
       user_turn
     else
-      puts "Invalid placement.
-      Please enter 3 separate coordinates which are:
+      puts "Invalid placement.""\n""\n"
+      puts "Please enter 3 separate coordinates which are:
       * placed starting with the upper-left most coordinate
       * consecutive
-      * horizontal (e.g. A1, A2) or vertical (e.g. A1, B1)
-      Please try again."
+      * horizontal (e.g. A1, A2) or vertical (e.g. A1, B1)""\n""\n"
       user_place_sub
     end
   end

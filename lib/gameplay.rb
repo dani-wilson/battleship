@@ -62,49 +62,44 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
     user_place_cruiser
   end
 
-  def computer_get_cruiser_coordinates
-    cruiser_coordinates = []
-    # until @computer_board.valid_placement?(@computer_cruiser, cruiser_coordinates) do
-      random_coords = @computer_board.cells.keys.sample(3)
-      cruiser_coordinates << random_coords
-      until @computer_board.valid_placement?(@computer_cruiser, cruiser_coordinates)
-        computer_get_cruiser_coordinates
-    end
-    return computer_get_cruiser_coordinates
-  end
-
-  def computer_get_sub_coordinates
-    sub_coordinates = []
-    random_coords = @computer_board.cells.keys.sample(2)
-    sub_coordinates << random_coords
-    until @computer_board.valid_placement?(@computer_sub, sub_coordinates)
-      computer_get_sub_coordinates
-    end
-    return computer_get_sub_coordinates
-  end
-
-
-
   def computer_place_ships
     cruiser_coordinates = []
-    @computer_cruiser.length.times do
-      until @computer_board.valid_placement?(@computer_cruiser, cruiser_coordinates) #do
+    until @computer_board.valid_placement?(@computer_cruiser, cruiser_coordinates) #do
+        cruiser_coordinates = []
         cruiser_coordinates << @computer_board.cells.keys.sample(3)
-        binding.pry
-      end
     end
+    # binding.pry
     @computer_board.place(@computer_cruiser, cruiser_coordinates)
   
 
     sub_coordinates = []
     until @computer_board.valid_placement?(@computer_sub, sub_coordinates) #do
-      @computer_sub.length.times do
-      # sample = @computer_board.cells.keys.sample(2)
-      sub_coordinates << @computer_board.cells.keys.sample
-      end
+      sub_coordinates = []
+      sub_coordinates << @computer_board.cells.keys.sample(2)
     end
     @computer_board.place(@computer_sub, sub_coordinates)
   end
+
+
+  # def computer_place_ship(ship)
+  #   loop do
+  #     coordinates = []
+      
+  #     ship.length.times do
+  #       coordinates << @computer_board.cells.keys.sample
+  #     end
+  #     coordinates.sort
+  #     if @computer_board.valid_placement?(ship, coordinates) == true
+  #       binding.pry
+  #       @computer_board.place(@ship, coordinates)
+  #       break
+  #     end
+  #   end
+  # end
+
+
+
+
 
   def user_place_cruiser
     puts "Enter the coordinates for your Cruiser.

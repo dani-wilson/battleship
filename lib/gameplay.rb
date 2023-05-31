@@ -1,4 +1,6 @@
 class Gameplay
+  # attr_reader :player_board,
+  #             :computer_board
 
   def initialize
     @player_board = Board.new
@@ -64,6 +66,7 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
     until @computer_board.valid_placement?(@computer_cruiser, cruiser_coordinates) do
       sample = @computer_board.cells.keys.sample(3)
       cruiser_coordinates << sample
+      require 'pry'; binding.pry
     end
     @computer_board.place(@computer_cruiser, cruiser_coordinates)
 
@@ -97,10 +100,12 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
       user_place_sub
     else
       puts "Invalid placement.
-      Please enter 3 separate coordinates which are consecutive and either...
-      Horizontal (e.g. A1, A2, A3)
-      or Vertical (e.g. A1, B1, C1)
-      "
+      Please enter 3 separate coordinates which are:
+      * placed starting with the upper-left most coordinate
+      * consecutive
+      * horizontal (e.g. A1, A2, A3) or vertical (e.g. A1, B1, C1)
+
+      Please try again."
       user_place_cruiser
     end
   end
@@ -125,9 +130,11 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
       user_turn
     else
       puts "Invalid placement.
-        Please enter 2 separate coordinates which are consecutive and either...
-        Horizontal (e.g. A1, A2)
-        or Vertical (e.g. A1, B1)"
+      Please enter 3 separate coordinates which are:
+      * placed starting with the upper-left most coordinate
+      * consecutive
+      * horizontal (e.g. A1, A2) or vertical (e.g. A1, B1)
+      Please try again."
       user_place_sub
     end
   end
@@ -145,7 +152,7 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
         if @computer_board.valid_coordinate?(shot)
         @computer_board.cells[shot].fire_upon
         sleep(1.5)
-        puts "Your shot on #{shot} was a #{@computer_board.cells[shot].render}"
+        puts "Your" + explain_render(@computer_board)
         sleep(1.5)
         end
       display_boards
@@ -154,15 +161,44 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
 
   def computer_turn
     puts "I will now attempt to fire on one of your ships."
-    comp_shot = @player_board.cells.values.sample(1).strip
-    if @player_board.valid_coordinate?(comp_shot)
-      @player_board.cells[comp_shot].fire_upon
+    shot = @player_board.cells.keys.sample
+    if @player_board.valid_coordinate?(shot)
+      @player_board.cells[shot].fire_upon
       sleep(1.5)
-      puts "My shot on #{comp_shot} was a #{@player_board.cells[comp_shot].render}"
+      puts "My" + explain_render(@player_board)
       sleep(1.5)
     end
     display_boards
     user_turn
   end
 
+  def explain_render(board)
+    if board.cells[shot].render == M
+      puts "shot on #{shot} was a miss."
+    elsif board.cells[shot].render == H
+      puts "shot on #{shot} was a HIT!"
+    else
+      puts "#{board.cells[shot].ship} is sunk."
+    end
+    # if 
+    #
+    #
+    #
+    #
+    #
+  end
+
 end
+
+# mission_to_sink method
+# if render = H
+#    mission to sink
+# 
+#
+# mission to sink
+# comp shot
+#
+#
+#
+#
+#

@@ -27,7 +27,7 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
     puts "Welcome to BATTLESHIP"
     sleep(1.0)
     puts "Enter p to play. Enter q to quit."
-    play_or_quit
+    self.play_or_quit
   end
 
   def play_or_quit
@@ -48,7 +48,7 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
   end
 
   def board_setup
-    self.computer_place_ships
+    computer_place_ships
     puts "I have laid out my ships on the grid."
     sleep(1.5)
     puts "You now need to lay out your two ships."
@@ -56,40 +56,73 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
     puts "The Cruiser is three units long and the Submarine is two units long."
     sleep(1.5)
     puts @player_board.render_board
-    self.user_place_ships
+    user_place_cruiser
   end
 
   def computer_place_ships
     cruiser_coordinates = []
-    until cruiser_coordinates.count == 3 && @computer_board.valid_placement?(@computer_cruiser, cruiser_coordinates) do
-      sample = @computer_board.cells.keys.sample
+    until @computer_board.valid_placement?(@computer_cruiser, cruiser_coordinates) do
+      sample = @computer_board.cells.keys.sample(3)
       cruiser_coordinates << sample
     end
     @computer_board.place(@computer_cruiser, cruiser_coordinates)
 
     sub_coordinates = []
-    until sub_coordinates.count == 2 && @computer_board.valid_placement?(@computer_sub, sub_coordinates) do
-      sample = @computer_board.cells.keys.sample
+    until @computer_board.valid_placement?(@computer_sub, sub_coordinates) do
+      sample = @computer_board.cells.keys.sample(2)
       sub_coordinates << sample
     end
     @computer_board.place(@computer_sub, sub_coordinates)
   end
 
-  def user_place_ships
-    puts "Enter the squares for the Cruiser (3 spaces)."
-    user_spaces = gets.chomp
+  def user_place_cruiser
+    puts "Enter the coordinates for your Cruiser.
+    You may place your ships either vertically or horizontally on the board (no diagonals!)."
+    sleep(1.5)
+    puts "Please select your first coordinate (e.g. A1)."
     spaces = []
-    spaces << user_spaces
+    coord_1 = gets.chomp
+    spaces << coord_1
+    puts "Please select your second coordinate."
+    coord_2 = gets.chomp
+    spaces << coord_2
+    puts "Please select your third coordinate."
+    coord_3 = gets.chomp
+    spaces << coord_3
     if @player_board.valid_placement?(@player_cruiser, spaces)
       @player_board.place(@player_cruiser, spaces)
-      puts @player_board.render_board(peek = true) + "(\n)" + "Enter the squares for the Submarine (2 spaces)."
+      puts @player_board.render_board(peek = true) 
+      puts "Enter the coordinates for the Submarine.
+      Do not overlap your ships!"
+      user_place_sub
+    else
+      puts "Invalid placement.
+      Please enter 3 separate coordinates which are consecutive and either...
+      Horizontal (e.g. A1, A2, A3)
+      or Vertical (e.g. A1, B1, C1)
+      "
+      user_place_cruiser
     end
-    user_spaces = gets.chomp
+  end
+
+  def user_place_sub
     spaces = []
-    spaces << user_spaces
+    puts "Please select your first coordinate."
+    coord_1 = gets.chomp
+    spaces << coord_1
+    puts "Please select your second coordinate."
+    coord_2 = gets.chomp
+    spaces << coord_2
     if @player_board.valid_placement?(@player_sub, spaces)
       @player_board.place(@player_sub, spaces)
-      puts @player_board.render_board(peek = true) + "(\n)" + "You have placed both your ships!"
+      puts @player_board.render_board(peek = true)
+      puts "You have placed both your ships!"
+    else
+      puts "Invalid placement.
+        Please enter 2 separate coordinates which are consecutive and either...
+        Horizontal (e.g. A1, A2)
+        or Vertical (e.g. A1, B1)"
+      user_place_sub
     end
   end
 

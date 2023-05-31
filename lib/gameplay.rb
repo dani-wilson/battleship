@@ -151,6 +151,22 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
         sleep(1.5)
         end
       display_boards
+      computer_turn
   end
+
+  def computer_turn
+    puts "I will now attempt to fire on one of your ships."
+    comp_shot = @player_board.cells.keys.sample(1).strip
+    if @player_board.valid_coordinate?(comp_shot)
+      @player_board.cells[comp_shot].fire_upon
+      sleep(1.5)
+      puts "My shot on #{comp_shot} was a #{@player_board.cells[comp_shot].render}"
+      sleep(1.5)
+    end
+    display_boards
+    user_turn
+  end
+
+
 
 end

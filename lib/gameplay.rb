@@ -146,62 +146,69 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
 
   def user_turn
     puts "Please select a coordinate to fire upon. Choose wisely."
-      shot = gets.chomp
-      if @computer_board.cells[shot].fired_upon? == false
-        if @computer_board.valid_coordinate?(shot)
-        @computer_board.cells[shot].fire_upon
-        sleep(1.5)
-        puts "  *  
-        / \ 
-       / _ \
-      | / \ |
-      | |_| |
-       \___/"
-        sleep(1.5)
-        explain_render(@computer_board, shot, "your")
-        sleep(1.5)
-        else
-          puts "Invalid coordinates. Try again."
-          user_turn
-        end
-      else
-        puts "This coordinate has already been fired upon.
-        Please choose another."
+    shot = gets.chomp
+    if @computer_board.valid_coordinate?(shot) && @computer_board.cells[shot].fired_upon? == false
+      @computer_board.cells[shot].fire_upon
+      sleep(1.5)
+      puts "    _.-^^---....,,--       
+      _--                  --_  
+      <                        >)
+      |                         | 
+      \._                   _./  
+          ```--. . , ; .--'''       
+                | |   |             
+            .-=||  | |=-.   
+            `-=#$%&%$#=-'   
+                | ;  :|     
+      _____.,-#%&$@%#&#~,._____"
+      sleep(1.5)
+      explain_render(@computer_board, shot, "your")
+      sleep(1.5)
+    elsif
+        puts "Invalid coordinates. Try again."
         user_turn
-      end
-      display_boards
-      if @computer_cruiser.sunk? == true && @computer_sub.sunk? == true
-        ending_message
-      else
+    else
+      puts "This coordinate has already been fired upon.
+      Please choose another."
+      user_turn
+    end
+    display_boards
+    if @computer_cruiser.sunk? == true && @computer_sub.sunk? == true
+      ending_message
+    else
       computer_turn
-      end
+    end
   end
 
   def computer_turn
     puts "I will now attempt to fire on one of your ships."
     sleep(1.5)
-    puts "  *  
-    / \ 
-   / _ \
-  | / \ |
-  | |_| |
-   \___/"
-    shot = @player_board.cells.keys.sample
-    until @computer_board.cells[shot].fired_upon? == false
+    puts "    _.-^^---....,,--       
+    _--                  --_  
+   <                        >)
+   |                         | 
+    \._                   _./  
+       ```--. . , ; .--'''       
+             | |   |             
+          .-=||  | |=-.   
+          `-=#$%&%$#=-'   
+             | ;  :|     
+    _____.,-#%&$@%#&#~,._____"
+    loop do
       shot = @player_board.cells.keys.sample
-    end
-
-    if @player_board.valid_coordinate?(shot)
-      @player_board.cells[shot].fire_upon
-      sleep(1.5)
-      explain_render(@player_board, shot, "my")
-      sleep(1.5)
+      if @player_board.valid_coordinate?(shot) && @computer_board.cells[shot]. fired_upon? == false
+        @player_board.cells[shot].fire_upon
+        sleep(1.5)
+        explain_render(@player_board, shot, "my")
+        sleep(1.5)
+        break
+      end
     end
     display_boards
-    if @player_cruiser.sunk? == true && player_sub.sunk? == true
+    if @player_cruiser.sunk? == true && @player_sub.sunk? == true
       ending_message
     else
-    user_turn
+      user_turn
     end
   end
 
@@ -211,7 +218,7 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
     elsif board.cells[shot].render == "H"
       puts "#{pov.capitalize} shot on #{shot} was a HIT!"
     else
-      puts "#{pov.capitalize} #{board.cells[shot].ship.name} has been sunk!"
+      puts "#{pov.capitalize} shot on #{board.cells[shot].ship.name} has caused it to sink!"
     end
   end
 
@@ -230,11 +237,10 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
       puts "You won!!"
     else
       puts "You lose! Better luck next time."
+    end
+    sleep(4.0)
+    welcome_screen
   end
-  sleep(4.0)
-  welcome_screen
-end
-
 end
 
 

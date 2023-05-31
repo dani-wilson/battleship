@@ -196,7 +196,7 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
     _____.,-#%&$@%#&#~,._____"
     loop do
       shot = @player_board.cells.keys.sample
-      if @player_board.valid_coordinate?(shot) && @computer_board.cells[shot]. fired_upon? == false
+      if @player_board.valid_coordinate?(shot) && @player_board.cells[shot].fired_upon? == false
         @player_board.cells[shot].fire_upon
         sleep(1.5)
         explain_render(@player_board, shot, "my")
@@ -242,17 +242,3 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
     welcome_screen
   end
 end
-
-
-# mission_to_sink method
-# if render = H
-#    mission to sink
-# 
-#
-# mission to sink
-# comp shot
-#
-#
-#
-#
-#

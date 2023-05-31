@@ -50,7 +50,8 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
   end
 
   def board_setup
-    computer_place_ships
+    computer_place_ship(@computer_cruiser)
+    computer_place_ship(@computer_sub)
     # binding.pry
     puts "I have laid out my ships on the grid."
     sleep(1.5)
@@ -62,44 +63,21 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
     user_place_cruiser
   end
 
-  def computer_place_ships
-    cruiser_coordinates = []
-    until @computer_board.valid_placement?(@computer_cruiser, cruiser_coordinates) #do
-        cruiser_coordinates = []
-        cruiser_coordinates << @computer_board.cells.keys.sample(3)
-    end
-    # binding.pry
-    @computer_board.place(@computer_cruiser, cruiser_coordinates)
-  
 
-    sub_coordinates = []
-    until @computer_board.valid_placement?(@computer_sub, sub_coordinates) #do
-      sub_coordinates = []
-      sub_coordinates << @computer_board.cells.keys.sample(2)
-    end
-    @computer_board.place(@computer_sub, sub_coordinates)
-  end
-
-
-  # def computer_place_ship(ship)
-  #   loop do
-  #     coordinates = []
+  def computer_place_ship(ship)
+    loop do
+      coordinates = []
       
-  #     ship.length.times do
-  #       coordinates << @computer_board.cells.keys.sample
-  #     end
-  #     coordinates.sort
-  #     if @computer_board.valid_placement?(ship, coordinates) == true
-  #       binding.pry
-  #       @computer_board.place(@ship, coordinates)
-  #       break
-  #     end
-  #   end
-  # end
-
-
-
-
+      ship.length.times do
+        coordinates << @computer_board.cells.keys.sample
+      end
+      coordinates.sort
+      if @computer_board.valid_placement?(ship, coordinates) == true
+          @computer_board.place(ship, coordinates)
+        break
+      end
+    end
+  end
 
   def user_place_cruiser
     puts "Enter the coordinates for your Cruiser.
@@ -161,7 +139,7 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
 
   def display_boards
     puts "==*============*=COMPUTER BOARD====*======*======"
-    puts @computer_board.render_board(peek = true) #changing for now to be able to see
+    puts @computer_board.render_board(peek = false)
     puts "==========*=====*PLAYER BOARD====*============*=="
     puts @player_board.render_board(peek = true)
   end

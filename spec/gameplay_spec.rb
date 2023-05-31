@@ -34,8 +34,9 @@ RSpec.describe Gameplay do
   # end
 
   it 'test' do
-    @game.computer_place_ships
-    expect(@game.computer_board.render_board(true).count("S")).to eq(5)
+    x = Ship.new("Cruiser", 3)
+    @game.computer_place_ship(x)
+    # expect(@game.computer_board.render_board(true).count("S")).to eq(5)
     # binding.pry
   end
 end

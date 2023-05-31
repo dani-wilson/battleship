@@ -63,10 +63,11 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
 
   def computer_place_ships
     cruiser_coordinates = []
+    # require 'pry'; binding.pry
     until @computer_board.valid_placement?(@computer_cruiser, cruiser_coordinates) do
-      sample = @computer_board.cells.keys.sample(3)
-      cruiser_coordinates << sample
+      random_coords = @computer_board.cells.keys.sample(3)
       # require 'pry'; binding.pry
+      cruiser_coordinates << random_coords
     end
     @computer_board.place(@computer_cruiser, cruiser_coordinates)
 
@@ -129,12 +130,12 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
       sleep(1.5)
       user_turn
     else
-      puts "Invalid placement."
-      "Please enter 3 separate coordinates which are:
+      puts "Invalid placement.
+      Please enter 3 separate coordinates which are:
       * placed starting with the upper-left most coordinate
       * consecutive
-      * horizontal (e.g. A1, A2) or vertical (e.g. A1, B1)"
-      "Please try again."
+      * horizontal (e.g. A1, A2) or vertical (e.g. A1, B1)
+      Please try again."
       user_place_sub
     end
   end

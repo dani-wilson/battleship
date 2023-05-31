@@ -1,4 +1,8 @@
+require "./artable"
+
 class Gameplay
+include Artable
+
   attr_reader :player_board,
               :computer_board
 
@@ -12,19 +16,7 @@ class Gameplay
   end
 
   def welcome_screen
-    puts "     |__
-    |\/
-    ---
-    / | [
-!      | |||
-_/|     _/|-++'
-+  +--|    |--|--|_ |-
-{ /|__|  |/\__|  |--- |||__/
-+---------------___[}-_===_.'____                 /\
-____`-' ||___-{]_| _[}-  |     |_[___\==--            \/   _
-__..._____--==/___]_|__|_____________________________[___\==--____,------' .7
-|                                                                     BB-61/
-\_________________________________________________________________________|"
+    welcome_ship
     # sleep(2.0)
     puts "Welcome to BATTLESHIP"
     sleep(1.0)
@@ -147,24 +139,24 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
   def user_turn
     puts "Please select a coordinate to fire upon. Choose wisely."
       shot = gets.chomp
-      if @computer_board.cells[shot].fired_upon? == false
-        if @computer_board.valid_coordinate?(shot)
-        @computer_board.cells[shot].fire_upon
-        sleep(1.5)
-        puts "'.  \ | /  ,'
-        `. `.' ,'
-        ( .`.|,' .)
-        - ~ -0- ~ -"
-        sleep(1.5)
-        explain_render(@computer_board, shot, "your")
-        sleep(1.5)
+      if @computer_board.valid_coordinate?(shot)
+        if @computer_board.cells[shot].fired_upon? == false
+          @computer_board.cells[shot].fire_upon
+          sleep(1.5)
+          puts "'.  \ | /  ,'
+          `. `.' ,'
+          ( .`.|,' .)
+          - ~ -0- ~ -"
+          sleep(1.5)
+          explain_render(@computer_board, shot, "your")
+          sleep(1.5)
         else
-          puts "Invalid coordinates. Try again."
+          puts "This coordinate has already been fired upon.
+          Please choose another."
           user_turn
         end
       else
-        puts "This coordinate has already been fired upon.
-        Please choose another."
+        puts "Invalid coordinates. Try again."
         user_turn
       end
       display_boards
@@ -182,16 +174,17 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
     `. `.' ,'
     ( .`.|,' .)
     - ~ -0- ~ -"
+    loop do
     shot = @player_board.cells.keys.sample
-    until @computer_board.cells[shot].fired_upon? == false
-      shot = @player_board.cells.keys.sample
-    end
-
-    if @player_board.valid_coordinate?(shot)
-      @player_board.cells[shot].fire_upon
-      sleep(1.5)
-      explain_render(@player_board, shot, "my")
-      sleep(1.5)
+        if @computer_board.cells[shot].fired_upon? == false
+          if @player_board.valid_coordinate?(shot)
+            @player_board.cells[shot].fire_upon
+            sleep(1.5)
+            explain_render(@player_board, shot, "my")
+            sleep(1.5)
+          end
+          break
+        end
     end
     display_boards
     if @player_cruiser.sunk? == true && player_sub.sunk? == true
@@ -207,7 +200,7 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
     elsif board.cells[shot].render == "H"
       puts "#{pov.capitalize} shot on #{shot} was a HIT!"
     else
-      puts "#{pov.capitalize} #{board.cells[shot].ship.name} has been sunk!"
+      puts  puts "#{pov.capitalize} shot on #{board.cells[shot].ship.name} has caused it to sink!"
     end
   end
 
@@ -225,6 +218,7 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
      *"
       puts "You won!!"
     else
+      row_away
       puts "You lose! Better luck next time."
   end
   sleep(4.0)

@@ -66,7 +66,7 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
     until @computer_board.valid_placement?(@computer_cruiser, cruiser_coordinates) do
       sample = @computer_board.cells.keys.sample(3)
       cruiser_coordinates << sample
-      require 'pry'; binding.pry
+      # require 'pry'; binding.pry
     end
     @computer_board.place(@computer_cruiser, cruiser_coordinates)
 
@@ -152,8 +152,11 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
         if @computer_board.valid_coordinate?(shot)
         @computer_board.cells[shot].fire_upon
         sleep(1.5)
-        puts "Your" + explain_render(@computer_board)
+        explain_render(@computer_board, shot, "your")
         sleep(1.5)
+        else
+          puts "Invalid coordinates. Try again."
+          user_turn
         end
       display_boards
       computer_turn
@@ -165,27 +168,22 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
     if @player_board.valid_coordinate?(shot)
       @player_board.cells[shot].fire_upon
       sleep(1.5)
-      puts "My" + explain_render(@player_board)
+      explain_render(@player_board, shot, "my")
       sleep(1.5)
     end
     display_boards
     user_turn
   end
 
-  def explain_render(board)
-    if board.cells[shot].render == M
-      puts "shot on #{shot} was a miss."
-    elsif board.cells[shot].render == H
-      puts "shot on #{shot} was a HIT!"
+  def explain_render(board, shot, pov)
+    if board.cells[shot].render == "M"
+      puts "#{pov.capitalize} shot on #{shot} was a miss."
+    elsif board.cells[shot].render == "H"
+      puts "#{pov.capitalize} shot on #{shot} was a HIT!"
     else
-      puts "#{board.cells[shot].ship} is sunk."
+      puts "#{pov.capitalize}#{board.cells[shot].ship} has been sunk!"
     end
-    # if 
-    #
-    #
-    #
-    #
-    #
+    
   end
 
 end

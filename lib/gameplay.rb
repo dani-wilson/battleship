@@ -1,6 +1,6 @@
 class Gameplay
-  # attr_reader :player_board,
-  #             :computer_board
+  attr_reader :player_board,
+              :computer_board
 
   def initialize
     @player_board = Board.new
@@ -195,7 +195,11 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
         user_turn
       end
       display_boards
+      if @computer_cruiser.sunk? == true && @computer_sub.sunk? == true
+        ending_message
+      else
       computer_turn
+      end
   end
 
   def computer_turn
@@ -217,7 +221,11 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
       sleep(1.5)
     end
     display_boards
+    if @player_cruiser.sunk? == true && player_sub.sunk? == true
+      ending_message
+    else
     user_turn
+    end
   end
 
   def explain_render(board, shot, pov)
@@ -229,6 +237,26 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
       puts "#{pov.capitalize} #{board.cells[shot].ship.name} has been sunk!"
     end
   end
+
+  def ending_message
+    if @computer_cruiser.sunk? == true && @computer_sub.sunk? == true
+    puts "                                   .''.       
+    .''.      .        *''*    :_\/_:     . 
+   :_\/_:   _\(/_  .:.*_\/_*   : /\ :  .'.:.'.
+.''.: /\ :   ./)\   ':'* /\ * :  '..'.  -=:o:=-
+:_\/_:'.:::.    ' *''*    * '.\'/.' _\(/_'.':'.'
+: /\ : :::::     *_\/_*     -= o =-  /)\    '  *
+'..'  ':::'     * /\ *     .'/.\'.   '
+   *            *..*         :
+     *
+     *"
+      puts "You won!!"
+    else
+      puts "You lose! Better luck next time."
+  end
+  sleep(4.0)
+  welcome_screen
+end
 
 end
 

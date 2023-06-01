@@ -1,16 +1,16 @@
-require "./artable"
+require "./lib/artable"
 
 class Gameplay
 include Artable
 
-  attr_reader :player_board,
+  attr_reader :user_board,
               :computer_board
 
   def initialize
-    @player_board = Board.new
+    @user_board = Board.new
     @computer_board = Board.new
-    @player_cruiser = Ship.new("Cruiser", 3)
-    @player_sub = Ship.new("Submarine", 2)
+    @user_cruiser = Ship.new("Cruiser", 3)
+    @user_sub = Ship.new("Submarine", 2)
     @computer_cruiser = Ship.new("Cruiser", 3)
     @computer_sub = Ship.new("Submarine", 2)
   end
@@ -44,14 +44,13 @@ include Artable
   def board_setup
     computer_place_ship(@computer_cruiser)
     computer_place_ship(@computer_sub)
-    # binding.pry
     puts "I have laid out my ships on the grid."
     sleep(1.5)
     puts "You now need to lay out your two ships."
     sleep(1.5)
     puts "The Cruiser is three units long and the Submarine is two units long."
     sleep(1.5)
-    puts @player_board.render_board
+    puts @user_board.render_board
     user_place_cruiser
   end
 
@@ -85,9 +84,9 @@ include Artable
     puts "Please select your third coordinate."
     coord_3 = gets.chomp
     spaces << coord_3
-    if @player_board.valid_placement?(@player_cruiser, spaces)
-      @player_board.place(@player_cruiser, spaces)
-      puts @player_board.render_board(peek = true) 
+    if @user_board.valid_placement?(@user_cruiser, spaces)
+      @user_board.place(@user_cruiser, spaces)
+      puts @user_board.render_board(peek = true) 
       puts "Enter the coordinates for the Submarine.
       Do not overlap your ships!"
       user_place_sub
@@ -109,9 +108,9 @@ include Artable
     puts "Please select your second coordinate."
     coord_2 = gets.chomp
     spaces << coord_2
-    if @player_board.valid_placement?(@player_sub, spaces)
-      @player_board.place(@player_sub, spaces)
-      puts @player_board.render_board(peek = true)
+    if @user_board.valid_placement?(@user_sub, spaces)
+      @user_board.place(@user_sub, spaces)
+      puts @user_board.render_board(peek = true)
       puts "You have placed both your ships!"
       sleep(1.5)
       puts "Let's play!"
@@ -133,7 +132,7 @@ include Artable
     puts "==*============*=COMPUTER BOARD====*======*======"
     puts @computer_board.render_board(peek = false)
     puts "==========*=====*PLAYER BOARD====*============*=="
-    puts @player_board.render_board(peek = true)
+    puts @user_board.render_board(peek = true)
   end
 
   def user_turn
@@ -143,10 +142,7 @@ include Artable
         if @computer_board.cells[shot].fired_upon? == false
           @computer_board.cells[shot].fire_upon
           sleep(1.5)
-          puts "'.  \ | /  ,'
-          `. `.' ,'
-          ( .`.|,' .)
-          - ~ -0- ~ -"
+          explosion
           sleep(1.5)
           explain_render(@computer_board, shot, "your")
           sleep(1.5)
@@ -170,27 +166,22 @@ include Artable
   def computer_turn
     puts "I will now attempt to fire on one of your ships."
     sleep(1.5)
-    puts "'.  \ | /  ,'
-    `. `.' ,'
-    ( .`.|,' .)
-    - ~ -0- ~ -"
+    explosion
     loop do
-    shot = @player_board.cells.keys.sample
-        if @computer_board.cells[shot].fired_upon? == false
-          if @player_board.valid_coordinate?(shot)
-            @player_board.cells[shot].fire_upon
-            sleep(1.5)
-            explain_render(@player_board, shot, "my")
-            sleep(1.5)
-          end
-          break
-        end
+      shot = @user_board.cells.keys.sample
+      if @user_board.valid_coordinate?(shot) && @user_board.cells[shot].fired_upon? == false
+        @user_board.cells[shot].fire_upon
+        sleep(1.5)
+        explain_render(@user_board, shot, "my")
+        sleep(1.5)
+        break
+      end
     end
     display_boards
-    if @player_cruiser.sunk? == true && player_sub.sunk? == true
+    if @user_cruiser.sunk? == true && @user_sub.sunk? == true
       ending_message
     else
-    user_turn
+      user_turn
     end
   end
 
@@ -206,19 +197,10 @@ include Artable
 
   def ending_message
     if @computer_cruiser.sunk? == true && @computer_sub.sunk? == true
-    puts "                                   .''.       
-    .''.      .        *''*    :_\/_:     . 
-   :_\/_:   _\(/_  .:.*_\/_*   : /\ :  .'.:.'.
-.''.: /\ :   ./)\   ':'* /\ * :  '..'.  -=:o:=-
-:_\/_:'.:::.    ' *''*    * '.\'/.' _\(/_'.':'.'
-: /\ : :::::     *_\/_*     -= o =-  /)\    '  *
-'..'  ':::'     * /\ *     .'/.\'.   '
-   *            *..*         :
-     *
-     *"
+    fireworks
       puts "You won!!"
     else
-      row_away
+      sunset
       puts "You lose! Better luck next time."
   end
   sleep(4.0)
@@ -228,8 +210,17 @@ end
 end
 
 
-# mission_to_sink method
-# if render = H
+if @user_board.cells.
+
+
+def mission_to_sink
+
+end
+# if computer got a hit
+# enter mission_to_sink loop
+# player turn 
+# player turn needs to send us back this loop
+# 
 #    mission to sink
 # 
 #

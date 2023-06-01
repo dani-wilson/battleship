@@ -4,7 +4,11 @@ class Gameplay
 include Artable
 
   attr_reader :user_board,
-              :computer_board
+              :computer_board,
+              :user_cruiser,
+              :user_sub,
+              :computer_cruiser,
+              :computer_sub
 
   def initialize
     @user_board = Board.new
@@ -21,22 +25,22 @@ include Artable
     puts "Welcome to BATTLESHIP"
     sleep(1.0)
     puts "Enter p to play. Enter q to quit."
-    self.play_or_quit
+    play_or_quit
   end
 
   def play_or_quit
     input = gets.chomp
     if input == "q"
       sleep(0.5)
-      puts "Goodbye"
-      sleep(2.0)
-      self.welcome_screen
+      puts "\n""\n""Too afraid to play?""\n""\n""\n""\n""\n""\n"
+      sleep(3.0)
+      welcome_screen
     elsif input == "p"
-      self.board_setup
+      board_setup
     else
       puts "Invalid input, please enter p or q."
       until input == "p" || input == "q"
-        self.play_or_quit
+        play_or_quit
       end
     end
   end
@@ -137,30 +141,30 @@ include Artable
 
   def user_turn
     puts "Please select a coordinate to fire upon. Choose wisely."
-      shot = gets.chomp
-      if @computer_board.valid_coordinate?(shot)
-        if @computer_board.cells[shot].fired_upon? == false
-          @computer_board.cells[shot].fire_upon
-          sleep(1.5)
-          explosion
-          sleep(1.5)
-          explain_render(@computer_board, shot, "your")
-          sleep(1.5)
-        else
-          puts "This coordinate has already been fired upon.
-          Please choose another."
-          user_turn
-        end
+    shot = gets.chomp
+    if @computer_board.valid_coordinate?(shot)
+      if @computer_board.cells[shot].fired_upon? == false
+        @computer_board.cells[shot].fire_upon
+        sleep(1.5)
+        explosion
+        sleep(1.5)
+        explain_render(@computer_board, shot, "your")
+        sleep(1.5)
       else
-        puts "Invalid coordinates. Try again."
+        puts "This coordinate has already been fired upon.
+        Please choose another."
         user_turn
       end
-      display_boards
-      if @computer_cruiser.sunk? == true && @computer_sub.sunk? == true
-        ending_message
-      else
-      computer_turn
-      end
+    else
+      puts "Invalid coordinates. Try again."
+      user_turn
+    end
+    display_boards
+    if @computer_cruiser.sunk? == true && @computer_sub.sunk? == true
+      ending_message
+    else
+    computer_turn
+    end
   end
 
   def computer_turn
@@ -202,32 +206,8 @@ include Artable
     else
       sunset
       puts "You lose! Better luck next time."
+    end
+    sleep(4.0)
+    welcome_screen
   end
-  sleep(4.0)
-  welcome_screen
 end
-
-end
-
-
-if @user_board.cells.
-
-
-def mission_to_sink
-
-end
-# if computer got a hit
-# enter mission_to_sink loop
-# player turn 
-# player turn needs to send us back this loop
-# 
-#    mission to sink
-# 
-#
-# mission to sink
-# comp shot
-#
-#
-#
-#
-#

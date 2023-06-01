@@ -1,49 +1,45 @@
+require "./lib/artable"
+
 class Gameplay
-  attr_reader :player_board,
-              :computer_board
+include Artable
+
+  attr_reader :user_board,
+              :computer_board,
+              :user_cruiser,
+              :user_sub,
+              :computer_cruiser,
+              :computer_sub
 
   def initialize
-    @player_board = Board.new
+    @user_board = Board.new
     @computer_board = Board.new
-    @player_cruiser = Ship.new("Cruiser", 3)
-    @player_sub = Ship.new("Submarine", 2)
+    @user_cruiser = Ship.new("Cruiser", 3)
+    @user_sub = Ship.new("Submarine", 2)
     @computer_cruiser = Ship.new("Cruiser", 3)
     @computer_sub = Ship.new("Submarine", 2)
   end
 
   def welcome_screen
-    puts "     |__
-    |\/
-    ---
-    / | [
-!      | |||
-_/|     _/|-++'
-+  +--|    |--|--|_ |-
-{ /|__|  |/\__|  |--- |||__/
-+---------------___[}-_===_.'____                 /\
-____`-' ||___-{]_| _[}-  |     |_[___\==--            \/   _
-__..._____--==/___]_|__|_____________________________[___\==--____,------' .7
-|                                                                     BB-61/
-\_________________________________________________________________________|"
+    welcome_ship
     puts "Welcome to BATTLESHIP"
     sleep(1.0)
     puts "Enter p to play. Enter q to quit."
-    self.play_or_quit
+    play_or_quit
   end
 
   def play_or_quit
     input = gets.chomp
     if input == "q"
       sleep(0.5)
-      puts "Goodbye"
-      sleep(2.0)
-      self.welcome_screen
+      puts "\n""\n""Too afraid to play?""\n""\n""\n""\n""\n""\n"
+      sleep(3.0)
+      welcome_screen
     elsif input == "p"
-      self.board_setup
+      board_setup
     else
       puts "Invalid input, please enter p or q."
       until input == "p" || input == "q"
-        self.play_or_quit
+        play_or_quit
       end
     end
   end
@@ -57,7 +53,7 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
     sleep(1.5)
     puts "The Cruiser is three units long and the Submarine is two units long."
     sleep(1.5)
-    puts @player_board.render_board
+    puts @user_board.render_board
     user_place_cruiser
   end
 
@@ -90,9 +86,9 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
     puts "Please select your third coordinate."
     coord_3 = gets.chomp
     spaces << coord_3
-    if @player_board.valid_placement?(@player_cruiser, spaces)
-      @player_board.place(@player_cruiser, spaces)
-      puts @player_board.render_board(peek = true) 
+    if @user_board.valid_placement?(@user_cruiser, spaces)
+      @user_board.place(@user_cruiser, spaces)
+      puts @user_board.render_board(peek = true) 
       puts "Enter the coordinates for the Submarine.
       Do not overlap your ships!"
       user_place_sub
@@ -114,9 +110,9 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
     puts "Please select your second coordinate."
     coord_2 = gets.chomp
     spaces << coord_2
-    if @player_board.valid_placement?(@player_sub, spaces)
-      @player_board.place(@player_sub, spaces)
-      puts @player_board.render_board(peek = true)
+    if @user_board.valid_placement?(@user_sub, spaces)
+      @user_board.place(@user_sub, spaces)
+      puts @user_board.render_board(peek = true)
       puts "You have placed both your ships!"
       sleep(1.5)
       puts "Let's play!"
@@ -138,35 +134,27 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
     puts "==*============*=COMPUTER BOARD====*======*======"
     puts @computer_board.render_board(peek = false)
     puts "==========*=====*PLAYER BOARD====*============*=="
-    puts @player_board.render_board(peek = true)
+    puts @user_board.render_board(peek = true)
   end
 
   def user_turn
     puts "Please select a coordinate to fire upon. Choose wisely."
     shot = gets.chomp
     if @computer_board.valid_coordinate?(shot) && @computer_board.cells[shot].fired_upon? == false
-      @computer_board.cells[shot].fire_upon
-      sleep(1.5)
-      puts "    _.-^^---....,,--       
-      _--                  --_  
-      <                        >)
-      |                         | 
-      \._                   _./  
-          ```--. . , ; .--'''       
-                | |   |             
-            .-=||  | |=-.   
-            `-=#$%&%$#=-'   
-                | ;  :|     
-      _____.,-#%&$@%#&#~,._____"
-      sleep(1.5)
-      explain_render(@computer_board, shot, "your")
-      sleep(1.5)
-    elsif
-        puts "Invalid coordinates. Try again."
+      if @computer_board.cells[shot].fired_upon? == false
+        @computer_board.cells[shot].fire_upon
+        sleep(1.5)
+        explosion
+        sleep(1.5)
+        explain_render(@computer_board, shot, "your")
+        sleep(1.5)
+      else
+        puts "This coordinate has already been fired upon.
+        Please choose another."
         user_turn
+      end
     else
-      puts "This coordinate has already been fired upon.
-      Please choose another."
+      puts "Invalid coordinates. Try again."
       user_turn
     end
     display_boards
@@ -180,29 +168,19 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
   def computer_turn
     puts "I will now attempt to fire on one of your ships."
     sleep(1.5)
-    puts "    _.-^^---....,,--       
-    _--                  --_  
-   <                        >)
-   |                         | 
-    \._                   _./  
-       ```--. . , ; .--'''       
-             | |   |             
-          .-=||  | |=-.   
-          `-=#$%&%$#=-'   
-             | ;  :|     
-    _____.,-#%&$@%#&#~,._____"
+    explosion
     loop do
-      shot = @player_board.cells.keys.sample
-      if @player_board.valid_coordinate?(shot) && @player_board.cells[shot].fired_upon? == false
-        @player_board.cells[shot].fire_upon
+      shot = @user_board.cells.keys.sample
+      if @user_board.valid_coordinate?(shot) && @user_board.cells[shot].fired_upon? == false
+        @user_board.cells[shot].fire_upon
         sleep(1.5)
-        explain_render(@player_board, shot, "my")
+        explain_render(@user_board, shot, "my")
         sleep(1.5)
         break
       end
     end
     display_boards
-    if @player_cruiser.sunk? == true && @player_sub.sunk? == true
+    if @user_cruiser.sunk? == true && @user_sub.sunk? == true
       ending_message
     else
       user_turn
@@ -221,19 +199,11 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
 
   def ending_message
     if @computer_cruiser.sunk? == true && @computer_sub.sunk? == true
-    puts "                                   .''.       
-    .''.      .        *''*    :_\/_:     . 
-   :_\/_:   _\(/_  .:.*_\/_*   : /\ :  .'.:.'.
-.''.: /\ :   ./)\   ':'* /\ * :  '..'.  -=:o:=-
-:_\/_:'.:::.    ' *''*    * '.\'/.' _\(/_'.':'.'
-: /\ : :::::     *_\/_*     -= o =-  /)\    '  *
-'..'  ':::'     * /\ *     .'/.\'.   '
-   *            *..*         :
-     *
-     *"
-      puts "You won!!"
+    fireworks
+      puts "You won!!""\n""\n""\n""\n""\n""\n""\n""\n"
     else
-      puts "You lose! Better luck next time."
+      sunset
+      puts "You lose! Better luck next time.""\n""\n""\n""\n""\n""\n"
     end
     sleep(4.0)
     welcome_screen

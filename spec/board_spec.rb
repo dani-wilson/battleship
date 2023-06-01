@@ -53,9 +53,9 @@ RSpec.describe do
     expect(@board.valid_placement?(@submarine, ["A1, A2, A3, A3"])).to eq(false)
     expect(@board.valid_placement?(@cruiser, ["A5, B5"])).to eq(false)
 
-    @board.place(@submarine, ["A1, A2"])
+    @board.place(@cruiser, ["A3, B3", "C3"])
 
-    expect(@board.valid_placement?(@cruiser, ["A1, B1, C1"])).to eq(false)
+    expect(@board.valid_placement?(@submarine, ["B2", "B3"])).to eq(false)
   end
 
   it 'can have a ship placed in its cells' do

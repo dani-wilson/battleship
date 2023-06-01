@@ -52,7 +52,6 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
   def board_setup
     computer_place_ship(@computer_cruiser)
     computer_place_ship(@computer_sub)
-    # binding.pry
     puts "I have laid out my ships on the grid."
     sleep(1.5)
     puts "You now need to lay out your two ships."

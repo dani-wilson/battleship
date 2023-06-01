@@ -49,6 +49,15 @@ RSpec.describe do
     expect(@board.valid_placement?(@cruiser, ["B1", "C1", "D1"])).to eq(true)
   end
 
+  it 'has conditions which will cause placements to fail' do
+    expect(@board.valid_placement?(@submarine, ["A1, A2, A3, A3"])).to eq(false)
+    expect(@board.valid_placement?(@cruiser, ["A5, B5"])).to eq(false)
+
+    @board.place(@submarine, ["A1, A2"])
+
+    expect(@board.valid_placement?(@cruiser, ["A1, B1, C1"])).to eq(false)
+  end
+
   it 'can have a ship placed in its cells' do
     expect(@board.place(@cruiser, ["A1", "A2", "A3"])).to eq(["A1", "A2", "A3"])
     expect(@board.cells["A1"].ship).to be_a(Ship)
@@ -62,6 +71,10 @@ RSpec.describe do
     @board.place(@cruiser, ["A1", "A2", "A3"])
 
     expect(@board.valid_placement?(@submarine, ["A1", "B1"])).to eq(false)
+  end
+
+  it 'can split the coordinates into letters(ordinal values) and numbers' do
+    expect(@board.split_coordinates(["A1"])).to eq([[65], [1]])
   end
 
   it 'can render itself in string format' do
@@ -83,15 +96,9 @@ RSpec.describe do
     @board.cells["A1"].fire_upon
 
     expect(@board.cells["A1"].render).to eq("M")
-    # puts @board.render_board
     
     @board.cells["B3"].fire_upon
 
     expect(@board.cells["B3"].render).to eq("H")
-    # puts @board.render_board
   end
-
-
-
-
 end

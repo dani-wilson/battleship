@@ -21,7 +21,6 @@ include Artable
 
   def welcome_screen
     welcome_ship
-    # sleep(2.0)
     puts "Welcome to BATTLESHIP"
     sleep(1.0)
     puts "Enter p to play. Enter q to quit."
@@ -62,7 +61,6 @@ include Artable
   def computer_place_ship(ship)
     loop do
       coordinates = []
-      
       ship.length.times do
         coordinates << @computer_board.cells.keys.sample
       end
@@ -142,7 +140,7 @@ include Artable
   def user_turn
     puts "Please select a coordinate to fire upon. Choose wisely."
     shot = gets.chomp
-    if @computer_board.valid_coordinate?(shot)
+    if @computer_board.valid_coordinate?(shot) && @computer_board.cells[shot].fired_upon? == false
       if @computer_board.cells[shot].fired_upon? == false
         @computer_board.cells[shot].fire_upon
         sleep(1.5)
@@ -163,7 +161,7 @@ include Artable
     if @computer_cruiser.sunk? == true && @computer_sub.sunk? == true
       ending_message
     else
-    computer_turn
+      computer_turn
     end
   end
 
@@ -195,7 +193,7 @@ include Artable
     elsif board.cells[shot].render == "H"
       puts "#{pov.capitalize} shot on #{shot} was a HIT!"
     else
-      puts  puts "#{pov.capitalize} shot on #{board.cells[shot].ship.name} has caused it to sink!"
+      puts "#{pov.capitalize} shot on #{board.cells[shot].ship.name} has caused it to sink!"
     end
   end
 

@@ -71,7 +71,6 @@ class Board
   def split_coordinates(coordinates)
     letters = []
     numbers = []
-    # binding.pry
     coordinates.flatten.each do |coordinate|
       letters << coordinate.split("",2)[0].ord
       numbers << coordinate.split("",2)[1].to_i

@@ -200,10 +200,10 @@ include Artable
   def ending_message
     if @computer_cruiser.sunk? == true && @computer_sub.sunk? == true
     fireworks
-      puts "You won!!"
+      puts "You won!!""\n""\n""\n""\n""\n""\n""\n""\n"
     else
       sunset
-      puts "You lose! Better luck next time."
+      puts "You lose! Better luck next time.""\n""\n""\n""\n""\n""\n"
     end
     sleep(4.0)
     welcome_screen

@@ -71,6 +71,7 @@ RSpec.describe do
     @board.place(@cruiser, ["A1", "A2", "A3"])
 
     expect(@board.valid_placement?(@submarine, ["A1", "B1"])).to eq(false)
+    expect(@board.place(@submarine, ["A1, B1"])).to eq(nil)
   end
 
   it 'can split the coordinates into letters(ordinal values) and numbers' do

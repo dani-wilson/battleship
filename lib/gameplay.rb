@@ -25,7 +25,6 @@ ____`-' ||___-{]_| _[}-  |     |_[___\==--            \/   _
 __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
 |                                                                     BB-61/
 \_________________________________________________________________________|"
-    # sleep(2.0)
     puts "Welcome to BATTLESHIP"
     sleep(1.0)
     puts "Enter p to play. Enter q to quit."
@@ -66,7 +65,6 @@ __..._____--==/___]_|__|_____________________________[___\==--____,------' .7
   def computer_place_ship(ship)
     loop do
       coordinates = []
-      
       ship.length.times do
         coordinates << @computer_board.cells.keys.sample
       end

@@ -202,7 +202,7 @@ include Artable
     fireworks
       puts "You won!!""\n""\n""\n""\n""\n""\n""\n""\n"
     else
-      sunset
+      sinking_ship
       puts "You lose! Better luck next time.""\n""\n""\n""\n""\n""\n"
     end
     sleep(4.0)
